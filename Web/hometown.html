@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Cici's hometown</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.9/"></script>
+<!-- <script> loads the ArcGIS API for JavaScript from a CDN. When new versions of the API are released, update the version number to match the newly released version.
+
+    <link> references the main.css style sheet which contains styles specific to Esri widgets and components.
+-->
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    //"require""" is provided by Dojo
+    require([
+        "esri/Map",
+        "esri/views/SceneView",
+        "esri/layers/GraphicsLayer",
+        "esri/Graphic"
+      ],
+      function(
+        Map, SceneView, GraphicsLayer, Graphic
+      ) {
+
+        var map = new Map({
+          basemap: "dark-gray"
+
+        //ground: "world-elevation"
+        // Code to create the map and view will go here
+        // Additional basemap options are:
+        // satellite, hybrid, topo, gray,
+        // dark-gray, oceans, osm, national-geographic.
+        });
+
+        // Create 3D view
+        var view = new SceneView({
+                container: "viewDiv",
+                // Reference to the DOM node that will contain the view
+                map: map,
+                // References the map object created in step 3
+                scale: 5000000, // Sets the initial scale to 1:50,000,000
+                center: [113.8546, 26.6228] // Sets the center point of view with lon/lat
+
+        });
+
+        /*********************
+         * Add graphics layer
+         *********************/
+
+        var graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+
+        /*************************
+         * Add a 3D point graphic
+         *************************/
+
+        // Pingxiang
+        var point = {
+          type: "point", // autocasts as new Point()
+          x: 113.8546,
+          y: 26.6228,
+          z: 1010
+        };
+
+        markerSymbol = {
+          type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+          color: [255, 255, 0],
+          outline: { // autocasts as new SimpleLineSymbol()
+            color: [255, 99, 71],
+            width: 2
+          }
+        };
+
+        var pointGraphic = new Graphic({
+          geometry: point,
+          symbol: markerSymbol
+        });
+
+        graphicsLayer.add(pointGraphic);
+
+        /****************************
+         * Add a 3D polyline graphic
+         ****************************/
+
+        var polyline = {
+          type: "polyline", // autocasts as new Polyline()
+          paths: [
+            [113.8546, 28.6228, 0],
+            [113.8546, 28.6228, 1000]
+          ]
+        };
+
+        lineSymbol = {
+          type: "simple-line", // autocasts as SimpleLineSymbol()
+          color: [255, 10, 40],
+          width: 4
+        };
+
+        var polylineGraphic = new Graphic({
+          geometry: polyline,
+          symbol: lineSymbol
+        });
+
+        graphicsLayer.add(polylineGraphic);
+
+        /***************************
+         * Add a 3D polygon graphic
+         ***************************/
+
+
+      });
+  </script>
+</head>
+
+<body>
+  <!--Define the page content-->
+  <div id="viewDiv"></div>
+</body>
+
+</html>
